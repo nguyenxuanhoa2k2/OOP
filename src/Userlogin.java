@@ -19,7 +19,6 @@ public class Userlogin {
                 if (username.equals(dbUser)) {
                     System.out.println("Login successful");
                     ListCourse lc = new ListCourse();
-                    ListStudent ls =new ListStudent();
                         int choice;
                         boolean t = true ;
                         while (t) {
@@ -37,48 +36,48 @@ public class Userlogin {
                                 t = false;
                                 break;
                                 case 1:
-                                    System.out.println("Add/Edit/Delete student");
-                                    int choice1;
-                                    do{
-                                        System.out.println("1. Add students");
-                                        System.out.println("2. Edit student");
-                                        System.out.println("3. Delete student");
-                                        System.out.println("4. Display student");
-                                        System.out.println("0. Exit"); 
-                                        choice1 = sc.nextInt();
+                                try {
+                                    Connection connection = JDBC.getConnection();
+                                    StudentManager manager = new StudentManager(connection);
+
+                                    boolean exit = false;
+                        
+                                    while (!exit) {
+                                        System.out.println("1. Add Student");
+                                        System.out.println("2. Delete Student");
+                                        System.out.println("3. Update Student");
+                                        System.out.println("4. Display All Student");
+                                        System.out.println("5. Exit");
+                                        System.out.println("Choose an option:");
+                        
+                                        int choice1 = sc.nextInt();
+                                        sc.nextLine(); // Consume newline
+                        
                                         switch (choice1) {
                                             case 1:
-                                                System.out.print("Enter student ID: ");
-                                                int sID = sc.nextInt();
-                                                sc.nextLine();
-                                                System.out.print("Enter name: ");
-                                                String sName = sc.nextLine();
-                                                System.out.print("Enter username: ");
-                                                String sUsername = sc.nextLine();
-                                                System.out.print("Enter password: ");
-                                                String sPassword = sc.nextLine();
-                                                Student student = new Student(sID, sName, sUsername, sPassword);
-                                                ls.addStudent(student);
+                                                manager.addStudent();
                                                 break;
                                             case 2:
-                                                ls.updateStudent();
+                                                manager.deleteStudent();
                                                 break;
                                             case 3:
-                                                ls.deleteStudent();
+                                                manager.updateStudent();
                                                 break;
                                             case 4:
-                                                ls.displayStudents();
+                                               manager.displayStudents();
+                                            case 5:
+                                                exit = true;
                                                 break;
                                             default:
-                                            if (choice1 != 0) {
-                                                System.out.println("Invalid selection!");
-                                            } else {
-                                                System.out.println("Ending session!");
-                                            }
-                                            break;
+                                                System.out.println("Invalid choice. Please choose again.");
                                         }
-                                    }while (choice1 != 0);
-                                    break;
+                                    }
+                        
+                                    JDBC.closeConnection(connection);
+                                } catch (SQLException e) {
+                                    e.printStackTrace();
+                                }
+                            
                     
                                 case 2:
                                     System.out.println("Add/Edit/Delete teacher");

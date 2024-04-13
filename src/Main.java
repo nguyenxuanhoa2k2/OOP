@@ -1,11 +1,11 @@
 import java.util.Scanner;
-import java.sql.*;
 
 
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int choice;
+        
         do {
             System.out.println("|----------|VUI LONG DANG NHAP|---------|");
             System.out.println("|---------1->Admin Login.---------------|");
@@ -16,6 +16,7 @@ public class Main {
             System.out.println("Choose: ");
             choice = sc.nextInt();
             sc.nextLine();
+
             switch (choice) {
                 case 1:
                     Userlogin.AdminLogin();

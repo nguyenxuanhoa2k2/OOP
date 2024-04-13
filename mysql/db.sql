@@ -22,15 +22,18 @@ LOCK TABLES `teacher` WRITE;
 INSERT INTO `teacher` VALUES (350,'tung','123456');
 UNLOCK TABLES;
 
-CREATE TABLE `student` (
-  `student_id` int NOT NULL,
-  `username` varchar(50) DEFAULT NULL,
+CREATE TABLE `students` (
+  `name` varchar(50) DEFAULT NULL,
+  `studentID` int NOT NULL,
+  `dob` date DEFAULT NULL,
+  `address` varchar(50) DEFAULT NULL,
+	`username` varchar(50) DEFAULT NULL,
   `password` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`student_id`)
+  PRIMARY KEY (`studentID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-LOCK TABLES `student` WRITE;
-INSERT INTO `student` VALUES (158,'hoa','123456');
+LOCK TABLES `students` WRITE;
+INSERT INTO `students` VALUES ('nguyen xuan hoa','158','2002-09-27','ha noi','hoa','123');
 UNLOCK TABLES;
 
 CREATE TABLE `courses` (
@@ -44,5 +47,5 @@ CREATE TABLE `courses` (
 
 select*from admintable;
 select*from teacher;
-select*from student;
+select*from students;
 select*from courses;
