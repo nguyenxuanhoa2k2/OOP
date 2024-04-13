@@ -59,22 +59,42 @@ public class StudentManager {
     public void updateStudent() throws SQLException {
         System.out.println("Enter student's ID to update:");
         String studentID = scanner.nextLine();
-
-        System.out.println("Enter new name:");
-        String name = scanner.nextLine();
-
-        System.out.println("Enter new date of birth (YYYY-MM-DD):");
-        String dob = scanner.nextLine();
-
-        System.out.println("Enter new address:");
-        String address = scanner.nextLine();
-
-        String query = "UPDATE students SET name = ?, dob = ?, address = ? WHERE studentID = ?";
+    
+        System.out.println("Choose information to update:");
+        System.out.println("1. Name");
+        System.out.println("2. Date of Birth");
+        System.out.println("3. Address");
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+    
+        String columnToUpdate = null;
+        String newValue = null;
+    
+        switch (choice) {
+            case 1:
+                columnToUpdate = "name";
+                System.out.println("Enter new name:");
+                newValue = scanner.nextLine();
+                break;
+            case 2:
+                columnToUpdate = "dob";
+                System.out.println("Enter new date of birth (YYYY-MM-DD):");
+                newValue = scanner.nextLine();
+                break;
+            case 3:
+                columnToUpdate = "address";
+                System.out.println("Enter new address:");
+                newValue = scanner.nextLine();
+                break;
+            default:
+                System.out.println("Invalid choice. No updates performed.");
+                return;
+        }
+    
+        String query = "UPDATE students SET " + columnToUpdate + " = ? WHERE studentID = ?";
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, name);
-        statement.setString(2, dob);
-        statement.setString(3, address);
-        statement.setString(4, studentID);
+        statement.setString(1, newValue);
+        statement.setString(2, studentID);
         int rowsUpdated = statement.executeUpdate();
         if (rowsUpdated > 0) {
             System.out.println("Student updated successfully.");
@@ -82,6 +102,7 @@ public class StudentManager {
             System.out.println("Student not found.");
         }
     }
+    
     public void displayStudents() throws SQLException {
         try {
             Connection connection = JDBC.getConnection();

@@ -11,15 +11,21 @@ LOCK TABLES `admintable` WRITE;
 INSERT INTO `admintable` VALUES (1101,'admin','123456');
 UNLOCK TABLES;
 
-CREATE TABLE `teacher` (
-  `teacher_id` int NOT NULL,
+CREATE TABLE `teachers` (
+  `name` varchar(50) DEFAULT NULL,
+  `teacherID` int NOT NULL,
+  `dob` date DEFAULT NULL,
+  `address` varchar(50) DEFAULT NULL,
+  `qualification` varchar(50) DEFAULT NULL,
+  `teachingSubject` varchar(50) DEFAULT NULL,
+  `teachingCourse` varchar(50) DEFAULT NULL,
   `username` varchar(50) DEFAULT NULL,
   `password` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`teacher_id`)
+  PRIMARY KEY (`teacherID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-LOCK TABLES `teacher` WRITE;
-INSERT INTO `teacher` VALUES (350,'tung','123456');
+LOCK TABLES `teachers` WRITE;
+INSERT INTO `teachers` VALUES ();
 UNLOCK TABLES;
 
 CREATE TABLE `students` (
@@ -27,7 +33,7 @@ CREATE TABLE `students` (
   `studentID` int NOT NULL,
   `dob` date DEFAULT NULL,
   `address` varchar(50) DEFAULT NULL,
-	`username` varchar(50) DEFAULT NULL,
+  `username` varchar(50) DEFAULT NULL,
   `password` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`studentID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -37,15 +43,17 @@ INSERT INTO `students` VALUES ('nguyen xuan hoa','158','2002-09-27','ha noi','ho
 UNLOCK TABLES;
 
 CREATE TABLE `courses` (
-  `course_id` int NOT NULL,
-  `course_name` varchar(45) NOT NULL,
-  `fee` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`course_id`)
+  `courseName` varchar(45) NOT NULL,
+  `courseCode` int NOT NULL,
+  `subject` varchar(45) NOT NULL,
+  `schedule` varchar(45) NOT NULL,
+  `teacherID` int NOT NULL,
+  `maxStudents` int NOT NULL,
+  `remainingStudents` int NOT NULL,
+  PRIMARY KEY (`courseCode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
-
 select*from admintable;
-select*from teacher;
+select*from teachers;
 select*from students;
 select*from courses;
