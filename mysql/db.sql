@@ -1,9 +1,3 @@
--- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
---
--- Host: 127.0.0.1    Database: test3
--- ------------------------------------------------------
--- Server version	8.0.34
-
 CREATE DATABASE db;
 
 CREATE TABLE `admintable` (
@@ -38,3 +32,17 @@ CREATE TABLE `student` (
 LOCK TABLES `student` WRITE;
 INSERT INTO `student` VALUES (158,'hoa','123456');
 UNLOCK TABLES;
+
+CREATE TABLE `courses` (
+  `course_id` int NOT NULL,
+  `course_name` varchar(45) NOT NULL,
+  `fee` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+select*from admintable;
+select*from teacher;
+select*from student;
+select*from courses;
