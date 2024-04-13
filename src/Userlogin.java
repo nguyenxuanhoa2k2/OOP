@@ -19,15 +19,14 @@ public class Userlogin {
                 if (username.equals(dbUser)) {
                     System.out.println("Login successful");
                     ListCourse lc = new ListCourse();
+                    ListStudent ls =new ListStudent();
                         int choice;
                         boolean t = true ;
                         while (t) {
                             System.out.println("\n-----Welcome to school management page for admin -----");
-                            System.out.println("1. Add student");
-                            System.out.println("2. View all student");
-                            System.out.println("3. Add teacher");
-                            System.out.println("4. View all teacher");
-                            System.out.println("5. Create course");
+                            System.out.println("1. Add/Edit/Delete student");
+                            System.out.println("2. Add/Edit/Delete teacher");
+                            System.out.println("3. Add/Edit/Delete course");
                             System.out.println("0. Log out");
                             System.out.print("Choose a function: ");
                             choice = sc.nextInt();
@@ -38,21 +37,56 @@ public class Userlogin {
                                 t = false;
                                 break;
                                 case 1:
-                                    System.out.println("Add student");
+                                    System.out.println("Add/Edit/Delete student");
+                                    int choice1;
+                                    do{
+                                        System.out.println("1. Add students");
+                                        System.out.println("2. Edit student");
+                                        System.out.println("3. Delete student");
+                                        System.out.println("4. Display student");
+                                        System.out.println("0. Exit"); 
+                                        choice1 = sc.nextInt();
+                                        switch (choice1) {
+                                            case 1:
+                                                System.out.print("Enter student ID: ");
+                                                int sID = sc.nextInt();
+                                                sc.nextLine();
+                                                System.out.print("Enter name: ");
+                                                String sName = sc.nextLine();
+                                                System.out.print("Enter username: ");
+                                                String sUsername = sc.nextLine();
+                                                System.out.print("Enter password: ");
+                                                String sPassword = sc.nextLine();
+                                                Student student = new Student(sID, sName, sUsername, sPassword);
+                                                ls.addStudent(student);
+                                                break;
+                                            case 2:
+                                                ls.updateStudent();
+                                                break;
+                                            case 3:
+                                                ls.deleteStudent();
+                                                break;
+                                            case 4:
+                                                ls.displayStudents();
+                                                break;
+                                            default:
+                                            if (choice1 != 0) {
+                                                System.out.println("Invalid selection!");
+                                            } else {
+                                                System.out.println("Ending session!");
+                                            }
+                                            break;
+                                        }
+                                    }while (choice1 != 0);
                                     break;
+                    
                                 case 2:
-                                    System.out.println("View all student");
+                                    System.out.println("Add/Edit/Delete teacher");
                                     break;
                                 case 3:
-                                    System.out.println("Add teacher");
-                                    break;
-                                case 4:
-                                    System.out.println("View all teacher");
-                                    break;
-                                case 5:
-                                    System.out.println("Create Course");
+                                    System.out.println("Add/Edit/Delete Course");
                                     // Process Add/Edit/Delete Course functionality
-                                    int choice1;
+                                    int choice3;
                                     do {
                                         System.out.println("1. Add course");
                                         System.out.println("2. Edit course");
@@ -60,8 +94,8 @@ public class Userlogin {
                                         System.out.println("4. Display list of courses");
                                         System.out.println("0. Exit");
                                         System.out.print("Select a function: ");
-                                        choice1 = sc.nextInt();
-                                        switch (choice1) {
+                                        choice3 = sc.nextInt();
+                                        switch (choice3) {
                                         case 1: // Add course
                                             System.out.println("Enter information for the new course:");
                                             System.out.print("ID: ");
@@ -84,14 +118,14 @@ public class Userlogin {
                                             lc.displayCourses();
                                             break;
                                         default:
-                                            if (choice1 != 0) {
+                                            if (choice3 != 0) {
                                                 System.out.println("Invalid selection!");
                                             } else {
                                                 System.out.println("Ending session!");
                                             }
                                             break;
                                         }
-                                            } while (choice1 != 0);
+                                            } while (choice3 != 0);
                                             break;
                                     
                                     default:

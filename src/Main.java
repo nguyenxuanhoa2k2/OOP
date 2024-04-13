@@ -28,7 +28,7 @@ public class Main {
                     break;
                 default:
                     if (choice != 0) {
-                        System.out.println("Function doesn't exist !!!");
+                        System.out.println("Function doesn't  exist!!!");
                     } else {
                         System.out.println("End");
                     }

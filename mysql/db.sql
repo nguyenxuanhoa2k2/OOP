@@ -1,10 +1,10 @@
 CREATE DATABASE db;
 
 CREATE TABLE `admintable` (
-  `MANV` int NOT NULL,
+  `admin_id` int NOT NULL,
   `username` varchar(50) DEFAULT NULL,
   `password` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`MANV`)
+  PRIMARY KEY (`admin_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `admintable` WRITE;
@@ -12,10 +12,10 @@ INSERT INTO `admintable` VALUES (1101,'admin','123456');
 UNLOCK TABLES;
 
 CREATE TABLE `teacher` (
-  `MANV` int NOT NULL,
+  `teacher_id` int NOT NULL,
   `username` varchar(50) DEFAULT NULL,
   `password` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`MANV`)
+  PRIMARY KEY (`teacher_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `teacher` WRITE;
@@ -23,10 +23,10 @@ INSERT INTO `teacher` VALUES (350,'tung','123456');
 UNLOCK TABLES;
 
 CREATE TABLE `student` (
-  `MANV` int NOT NULL,
+  `student_id` int NOT NULL,
   `username` varchar(50) DEFAULT NULL,
   `password` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`MANV`)
+  PRIMARY KEY (`student_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `student` WRITE;
