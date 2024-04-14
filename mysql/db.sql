@@ -24,9 +24,7 @@ CREATE TABLE `teachers` (
   PRIMARY KEY (`teacherID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-LOCK TABLES `teachers` WRITE;
-INSERT INTO `teachers` VALUES ();
-UNLOCK TABLES;
+
 
 CREATE TABLE `students` (
   `name` varchar(50) DEFAULT NULL,
@@ -37,10 +35,6 @@ CREATE TABLE `students` (
   `password` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`studentID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-LOCK TABLES `students` WRITE;
-INSERT INTO `students` VALUES ('nguyen xuan hoa','158','2002-09-27','ha noi','hoa','123');
-UNLOCK TABLES;
 
 CREATE TABLE `courses` (
   `courseName` varchar(45) NOT NULL,
@@ -53,7 +47,18 @@ CREATE TABLE `courses` (
   PRIMARY KEY (`courseCode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+
+CREATE TABLE enrollments (
+    enrollmentID INT NOT NULL AUTO_INCREMENT,
+    studentID int NOT NULL,
+    courseCode int NOT NULL,
+    PRIMARY KEY (enrollmentID),
+    FOREIGN KEY (studentID) REFERENCES students(studentID),
+    FOREIGN KEY (courseCode) REFERENCES courses(courseCode)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 select*from admintable;
 select*from teachers;
 select*from students;
 select*from courses;
+select*from enrollments;

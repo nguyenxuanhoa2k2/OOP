@@ -90,5 +90,30 @@ public class CourseManager {
         }
     }
 
+    public void displayCourses() throws SQLException {
+        String query = "SELECT * FROM courses";
+        PreparedStatement statement = connection.prepareStatement(query);
+        ResultSet resultSet = statement.executeQuery();
+    
+        System.out.println("Courses:");
+        // System.out.printf("%-20s %-10s %-20s %-10s %-10s %-10s %-10s%n", "Course Name", "Course Code", "Subject", "Schedule", "Teacher ID", "Max Students", "Remaining Students");
+        System.out.println("Course Code\tCourse Name\tSubject\t\tSchedule\tTeacher ID\t\tMax Students\t\tRemaining Students");
+    
+        while (resultSet.next()) {
+            String courseName = resultSet.getString("courseName");
+            String courseCode = resultSet.getString("courseCode");
+            String subject = resultSet.getString("subject");
+            String schedule = resultSet.getString("schedule");
+            String teacherID = resultSet.getString("teacherID");
+            int maxStudents = resultSet.getInt("maxStudents");
+            int remainingStudents = resultSet.getInt("remainingStudents");
+            System.out.println(courseCode + "\t\t" + courseName +"\t\t" + subject + "\t\t" + schedule +"\t\t"+ teacherID + "\t\t\t" + maxStudents +"\t\t\t" + remainingStudents );
+            // System.out.printf("%-20s %-10s %-20s %-10s %-10s %-10d %-10d%n", courseName, courseCode, subject, schedule, teacherID, maxStudents, remainingStudents);
+        }
+    
+        resultSet.close();
+        statement.close();
+    }
+
 
 }
