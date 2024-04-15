@@ -35,16 +35,18 @@ public class TeacherManager {
         System.out.println("Enter teacher's password:");
         String password = scanner.nextLine();
 
+        Teacher teacher = new Teacher(name, teacherID, dob, address, qualification, teachingSubject, username, password);
+
         String query = "INSERT INTO teachers (name, teacherID, dob, address, qualification, teachingSubject ,username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, name);
-        statement.setString(2, teacherID);
-        statement.setString(3, dob);
-        statement.setString(4, address);
-        statement.setString(5, qualification);
-        statement.setString(6, teachingSubject);
-        statement.setString(7, username);
-        statement.setString(8, password);
+        statement.setString(1, teacher.getName());
+        statement.setString(2, teacher.getTeacherID());
+        statement.setString(3, teacher.getDob());
+        statement.setString(4, teacher.getAddress());
+        statement.setString(5, teacher.getQualification());
+        statement.setString(6, teacher.getTeachingSubject());
+        statement.setString(7, teacher.getUsername());
+        statement.setString(8, teacher.getPassword());
         statement.executeUpdate();
         System.out.println("Teacher added successfully.");
     }
@@ -53,9 +55,11 @@ public class TeacherManager {
         System.out.println("Enter teacher's ID to delete:");
         String teacherID = scanner.nextLine();
 
+        Teacher teacher = new Teacher(teacherID);
+
         String query = "DELETE FROM teachers WHERE teacherID = ?";
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, teacherID);
+        statement.setString(1, teacher.getTeacherID());
         int rowsDeleted = statement.executeUpdate();
         if (rowsDeleted > 0) {
             System.out.println("Teacher deleted successfully.");
@@ -67,6 +71,8 @@ public class TeacherManager {
     public void updateTeacher() throws SQLException {
         System.out.println("Enter teacher's ID to update:");
         String teacherID = scanner.nextLine();
+
+        Teacher teacher = new Teacher(teacherID);
 
         System.out.println("Choose information to update:");
         System.out.println("1. Name");
@@ -116,9 +122,9 @@ public class TeacherManager {
         String query = "UPDATE teachers SET " + columnToUpdate + " = ? WHERE teacherID = ?";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, newValue);
-        statement.setString(2, teacherID);
+        statement.setString(2, teacher.getTeacherID());
         int rowsUpdated = statement.executeUpdate();
-        if (rowsUpdated > 0) {
+if (rowsUpdated > 0) {
             System.out.println("Teacher updated successfully.");
         } else {
             System.out.println("Teacher not found.");

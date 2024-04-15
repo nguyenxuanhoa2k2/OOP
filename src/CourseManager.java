@@ -10,9 +10,7 @@ public class CourseManager {
         scanner = new Scanner(System.in);
     }
 
-    
     public void addCourse() throws SQLException {
-
         System.out.println("Enter course name:");
         String courseName = scanner.nextLine();
 
@@ -31,28 +29,26 @@ public class CourseManager {
         System.out.println("Enter max number of students:");
         int maxStudents = scanner.nextInt();
 
-        int remainingStudents = maxStudents;
+        Course course = new Course(courseName, courseCode, subject, teacherID, schedule, maxStudents, maxStudents);
 
         String query = "INSERT INTO courses (courseName, courseCode, subject, teacherID, schedule, maxStudents, remainingStudents) VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, courseName);
-        statement.setString(2, courseCode);
-        statement.setString(3, subject);
-        statement.setString(4, teacherID);
-        statement.setString(5, schedule);
-        statement.setInt(6, maxStudents);
-        statement.setInt(7, remainingStudents);
+        statement.setString(1, course.getCourseName());
+        statement.setString(2, course.getCourseCode());
+        statement.setString(3, course.getSubject());
+        statement.setString(4, course.getTeacherID());
+        statement.setString(5, course.getSchedule());
+        statement.setInt(6, course.getMaxStudents());
+        statement.setInt(7, course.getRemainingStudents());
         statement.executeUpdate();
 
         String updateTeacherQuery = "UPDATE teachers SET teachingCourse = ? WHERE teacherID = ?";
         PreparedStatement updateTeacherStatement = connection.prepareStatement(updateTeacherQuery);
-        updateTeacherStatement.setString(1, courseCode);
-        updateTeacherStatement.setString(2, teacherID);
+        updateTeacherStatement.setString(1, course.getCourseCode());
+        updateTeacherStatement.setString(2, course.getTeacherID());
         updateTeacherStatement.executeUpdate();
-        
-        System.out.println("Course added successfully.");
 
-        
+        System.out.println("Course added successfully.");
     }
 
     public void deleteCourse() throws SQLException {
@@ -77,15 +73,45 @@ public class CourseManager {
         System.out.println("Enter new max number of students:");
         int newMaxStudents = scanner.nextInt();
 
-        String query = "UPDATE courses SET maxStudents = ? WHERE courseCode = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, newMaxStudents);
-        statement.setString(2, courseCode);
-        int rowsUpdated = statement.executeUpdate();
-        if (rowsUpdated > 0) {
-            System.out.println("Course updated successfully.");
+        Course course = getCourseByCode(courseCode);
+        if (course != null) {
+            course.setMaxStudents(newMaxStudents);
+            course.setRemainingStudents(newMaxStudents);
+
+            String query = "UPDATE courses SET maxStudents = ?, remainingStudents = ? WHERE courseCode = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, course.getMaxStudents());
+            statement.setInt(2, course.getRemainingStudents());
+            statement.setString(3, course.getCourseCode());
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Course updated successfully.");
+            } else {
+                System.out.println("Course not found.");
+            }
         } else {
             System.out.println("Course not found.");
+        }
+    }
+
+    private Course getCourseByCode(String courseCode) throws SQLException {
+        String query = "SELECT * FROM courses WHERE courseCode = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, courseCode);
+        ResultSet resultSet = statement.executeQuery();
+        
+        if (resultSet.next()) {
+            return new Course(
+                resultSet.getString("courseName"),
+                resultSet.getString("courseCode"),
+                resultSet.getString("subject"),
+                resultSet.getString("teacherID"),
+                resultSet.getString("schedule"),
+                resultSet.getInt("maxStudents"),
+                resultSet.getInt("remainingStudents")
+                );
+        } else {
+            return null;
         }
     }
 
@@ -105,13 +131,10 @@ public class CourseManager {
             String teacherID = resultSet.getString("teacherID");
             int maxStudents = resultSet.getInt("maxStudents");
             int remainingStudents = resultSet.getInt("remainingStudents");
-            // System.out.println(courseCode + "\t\t" + courseName +"\t\t" + subject + "\t\t" + schedule +"\t\t"+ teacherID + "\t\t\t" + maxStudents +"\t\t\t" + remainingStudents );
             System.out.printf("%-20s %-10s %-16s %-16s %-16s %-16d %-16d%n", courseCode, courseName , subject, schedule, teacherID, maxStudents, remainingStudents);
         }
     
         resultSet.close();
         statement.close();
     }
-
-
 }

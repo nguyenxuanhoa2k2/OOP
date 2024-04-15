@@ -123,7 +123,6 @@ public class Userlogin {
                                     break;
                                 case 3:
                                 System.out.println("Course Management");
-                                // Process Add/Edit/Delete Course functionality
                                 try {
                                     Connection connection = JDBC.getConnection();
                                     CourseManager manager = new CourseManager(connection);
@@ -319,7 +318,7 @@ public class Userlogin {
                                     
                                                 int choice2 = sc.nextInt();
                                                 sc.nextLine(); 
-                                                
+
                                                 switch (choice2) {
                                                     case 1:
                                                         System.out.println("Enter course code:");

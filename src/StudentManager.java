@@ -59,17 +59,17 @@ public class StudentManager {
     public void updateStudent() throws SQLException {
         System.out.println("Enter student's ID to update:");
         String studentID = scanner.nextLine();
-    
+
         System.out.println("Choose information to update:");
         System.out.println("1. Name");
         System.out.println("2. Date of Birth");
         System.out.println("3. Address");
         int choice = scanner.nextInt();
         scanner.nextLine(); // Consume newline
-    
+
         String columnToUpdate = null;
         String newValue = null;
-    
+
         switch (choice) {
             case 1:
                 columnToUpdate = "name";
@@ -90,7 +90,7 @@ public class StudentManager {
                 System.out.println("Invalid choice. No updates performed.");
                 return;
         }
-    
+
         String query = "UPDATE students SET " + columnToUpdate + " = ? WHERE studentID = ?";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, newValue);
@@ -102,7 +102,7 @@ public class StudentManager {
             System.out.println("Student not found.");
         }
     }
-    
+
     public void displayStudents() throws SQLException {
         try {
             Connection connection = JDBC.getConnection();
