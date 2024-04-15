@@ -120,7 +120,7 @@ public class StudentManager {
                 String address = resultSet.getString("address");
                 String username = resultSet.getString("username");
                 String password = resultSet.getString("password");
-                System.out.println(id + "\t" + name +"\t" + dob + "\t" + address +"\t\t" + username + "\t\t" + password);
+                System.out.printf("%-10s%-20s%-18s%-16s%-16s%-15s%n", id, name, dob, address, username, password);
             }
 
             resultSet.close();

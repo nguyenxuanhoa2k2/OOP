@@ -52,10 +52,14 @@ CREATE TABLE enrollments (
     enrollmentID INT NOT NULL AUTO_INCREMENT,
     studentID int NOT NULL,
     courseCode int NOT NULL,
+    midtermGrade DOUBLE,
+    finalGrade DOUBLE,
+    averageGrade DOUBLE,
     PRIMARY KEY (enrollmentID),
     FOREIGN KEY (studentID) REFERENCES students(studentID),
     FOREIGN KEY (courseCode) REFERENCES courses(courseCode)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 
 select*from admintable;
 select*from teachers;

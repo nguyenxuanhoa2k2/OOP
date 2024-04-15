@@ -134,7 +134,7 @@ public class TeacherManager {
             ResultSet resultSet = statement.executeQuery(sql);
 
             System.out.println("TEACHERS LIST");
-            System.out.println("TeacherID\tName\t\tDoB\t\tAddress\t\tQualification\t\tTeachingSubject\t\tUsername\tPassword");
+            System.out.println("TeacherID\tName\t\t\tDoB\t\tAddress\t\tQualification\t\tTeachingSubject\t\tUsername\tPassword");
             while (resultSet.next()) {
                 int id = resultSet.getInt("teacherID");
                 String name = resultSet.getString("name");
@@ -144,7 +144,8 @@ public class TeacherManager {
                 String teachingSubject = resultSet.getString("teachingSubject");
                 String username = resultSet.getString("username");
                 String password = resultSet.getString("password");
-                System.out.println(id + "\t\t" + name +"\t" + dob + "\t" + address +"\t"+ qualification + "\t\t\t" + teachingSubject +"\t\t\t" + username + "\t\t" + password);
+                System.out.printf("%-10s%-25s%-21s%-16s%-24s%-24s%-16s%-15s%n", id, name, dob, address, qualification, teachingSubject, username, password);
+                
             }
 
             resultSet.close();

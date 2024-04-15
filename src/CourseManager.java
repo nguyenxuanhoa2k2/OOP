@@ -13,7 +13,6 @@ public class CourseManager {
     
     public void addCourse() throws SQLException {
 
-
         System.out.println("Enter course name:");
         String courseName = scanner.nextLine();
 
@@ -96,8 +95,7 @@ public class CourseManager {
         ResultSet resultSet = statement.executeQuery();
     
         System.out.println("Courses:");
-        // System.out.printf("%-20s %-10s %-20s %-10s %-10s %-10s %-10s%n", "Course Name", "Course Code", "Subject", "Schedule", "Teacher ID", "Max Students", "Remaining Students");
-        System.out.println("Course Code\tCourse Name\tSubject\t\tSchedule\tTeacher ID\t\tMax Students\t\tRemaining Students");
+        System.out.println("Course Code\tCourse Name\tSubject\t\tSchedule\tTeacher ID\tMax Students\tRemaining Students");
     
         while (resultSet.next()) {
             String courseName = resultSet.getString("courseName");
@@ -107,8 +105,8 @@ public class CourseManager {
             String teacherID = resultSet.getString("teacherID");
             int maxStudents = resultSet.getInt("maxStudents");
             int remainingStudents = resultSet.getInt("remainingStudents");
-            System.out.println(courseCode + "\t\t" + courseName +"\t\t" + subject + "\t\t" + schedule +"\t\t"+ teacherID + "\t\t\t" + maxStudents +"\t\t\t" + remainingStudents );
-            // System.out.printf("%-20s %-10s %-20s %-10s %-10s %-10d %-10d%n", courseName, courseCode, subject, schedule, teacherID, maxStudents, remainingStudents);
+            // System.out.println(courseCode + "\t\t" + courseName +"\t\t" + subject + "\t\t" + schedule +"\t\t"+ teacherID + "\t\t\t" + maxStudents +"\t\t\t" + remainingStudents );
+            System.out.printf("%-20s %-10s %-16s %-16s %-16s %-16d %-16d%n", courseCode, courseName , subject, schedule, teacherID, maxStudents, remainingStudents);
         }
     
         resultSet.close();

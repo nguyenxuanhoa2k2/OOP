@@ -29,7 +29,6 @@ public class Userlogin {
                             System.out.print("Choose a function: ");
                             choice = sc.nextInt();
                 
-                            // Xử lý lựa chọn của người dùng
                             switch (choice) {
                                 case 0:
                                 t = false;
@@ -52,8 +51,8 @@ public class Userlogin {
                                         System.out.println("Choose an option:");
                         
                                         int choice1 = sc.nextInt();
-                                        sc.nextLine(); // Consume newline
-                        
+                                        sc.nextLine(); 
+
                                         switch (choice1) {
                                             case 1:
                                                 manager.addStudent();
@@ -139,8 +138,8 @@ public class Userlogin {
                                         System.out.println("Choose an option:");
                         
                                         int choice3 = sc.nextInt();
-                                        sc.nextLine(); // Consume newline
-                        
+                                        sc.nextLine(); 
+
                                         switch (choice3) {
                                             case 1:
                                                 manager.addCourse();
@@ -189,13 +188,15 @@ public class Userlogin {
         String password = sc.next();
         Connection d= JDBC.getConnection();
         try{
-            PreparedStatement ps = d.prepareStatement("SELECT username, password FROM teachers WHERE password = ?");
+            PreparedStatement ps = d.prepareStatement("SELECT teacherID, username, password FROM teachers WHERE password = ?");
             ps.setString(1, password);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 String dbUser = rs.getString("username");
                 if (username.equals(dbUser)) {
                     System.out.println("Login successful");
+                    int teacherID = rs.getInt("teacherID"); 
+
                         int choice;
                         boolean t = true;
                         while (t) {
@@ -211,10 +212,30 @@ public class Userlogin {
                                     t = false;
                                     break;  
                                 case 1:
-                                    System.out.println("View student in couse");
+                                    System.out.println("Enter course code to view students:");
+                                    String courseCode = sc.next();
+                                    try {
+                                        Connection connection = JDBC.getConnection();
+                                        GradeManager gradeManager = new GradeManager(connection);
+                                        System.out.println("Viewing students in course " + courseCode);
+                                        gradeManager.displayStudentsInCourse(courseCode);
+                                        connection.close();
+                                    } catch (SQLException e) {
+                                        e.printStackTrace();
+                                    }
                                     break;
                                 case 2:
+                                try {
+                                    Connection connection = JDBC.getConnection();
+                                    GradeManager gradeManager = new GradeManager(connection);
                                     System.out.println("Grade student");
+                                        gradeManager.gradeCourse(Integer.toString(teacherID));
+                            
+                                        connection.close();
+                                    } catch (SQLException e) {
+                                        e.printStackTrace();
+                                    }
+                                
                                     break;
                                     default:
                                     if (choice != 0) {
@@ -253,7 +274,7 @@ public class Userlogin {
                 String dbUser = rs.getString("username");
                 if (username.equals(dbUser)) {
                     System.out.println("Login successful");
-                    int studentID = rs.getInt("studentID"); // Set the studentID
+                    int studentID = rs.getInt("studentID"); 
                         int choice;
                         boolean t = true;
                         while (t) {
@@ -268,7 +289,16 @@ public class Userlogin {
                                         t = false;
                                         break;
                                     case 1:
-                                        System.out.println("View grade");
+                                        System.out.println("Enter student ID to view grades:");
+                                        try {
+                                            Connection connection = JDBC.getConnection();
+                                            GradeManager gradeManager = new GradeManager(connection);
+                                            System.out.println("Viewing grades for student " + studentID);
+                                            gradeManager.studentViewGrades(Integer.toString(studentID));
+                                            connection.close();
+                                        } catch (SQLException e) {
+                                            e.printStackTrace();
+                                        }
                                         break;
                                         case 2:
                                         System.out.println("Enrollments Management");
@@ -288,8 +318,8 @@ public class Userlogin {
                                                 System.out.println("Choose an option:");
                                     
                                                 int choice2 = sc.nextInt();
-                                                sc.nextLine(); // Consume newline
-                                    
+                                                sc.nextLine(); 
+                                                
                                                 switch (choice2) {
                                                     case 1:
                                                         System.out.println("Enter course code:");
