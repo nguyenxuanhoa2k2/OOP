@@ -119,9 +119,9 @@ public class CourseManager {
         String query = "SELECT * FROM courses";
         PreparedStatement statement = connection.prepareStatement(query);
         ResultSet resultSet = statement.executeQuery();
-    
-        System.out.println("Courses:");
-        System.out.println("Course Code\tCourse Name\tSubject\t\tSchedule\tTeacher ID\tMax Students\tRemaining Students");
+        System.out.println("-------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.printf("%-16s | %-15s | %-16s | %-16s | %-16s | %-16s | %-18s |%n", "Course Code", "Course Name", "Subject", "Schedule", "Teacher ID", "Max Students", "Remaining Students");
+        System.out.println("-------------------------------------------------------------------------------------------------------------------------------------");
     
         while (resultSet.next()) {
             String courseName = resultSet.getString("courseName");
@@ -131,7 +131,9 @@ public class CourseManager {
             String teacherID = resultSet.getString("teacherID");
             int maxStudents = resultSet.getInt("maxStudents");
             int remainingStudents = resultSet.getInt("remainingStudents");
-            System.out.printf("%-20s %-10s %-16s %-16s %-16s %-16d %-16d%n", courseCode, courseName , subject, schedule, teacherID, maxStudents, remainingStudents);
+            System.out.printf("%-16s | %-15s | %-16s | %-16s | %-16s | %-16d | %-18d |%n", courseCode, courseName, subject, schedule, teacherID, maxStudents, remainingStudents);
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------");
+           
         }
     
         resultSet.close();

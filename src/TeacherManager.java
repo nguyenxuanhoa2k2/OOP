@@ -131,6 +131,7 @@ if (rowsUpdated > 0) {
         }
     }
 
+
     public void displayTeachers() throws SQLException {
         try {
             Connection connection = JDBC.getConnection();
@@ -140,7 +141,9 @@ if (rowsUpdated > 0) {
             ResultSet resultSet = statement.executeQuery(sql);
 
             System.out.println("TEACHERS LIST");
-            System.out.println("TeacherID\tName\t\t\tDoB\t\tAddress\t\tQualification\t\tTeachingSubject\t\tUsername\tPassword");
+            System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.printf("%-10s | %-25s | %-21s | %-16s | %-24s | %-24s | %-16s | %-15s | %n", "TeacherID", "Name", "DoB", "Address", "Qualification", "TeachingSubject", "Username", "Password");
+            System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             while (resultSet.next()) {
                 int id = resultSet.getInt("teacherID");
                 String name = resultSet.getString("name");
@@ -150,7 +153,9 @@ if (rowsUpdated > 0) {
                 String teachingSubject = resultSet.getString("teachingSubject");
                 String username = resultSet.getString("username");
                 String password = resultSet.getString("password");
-                System.out.printf("%-10s%-25s%-21s%-16s%-24s%-24s%-16s%-15s%n", id, name, dob, address, qualification, teachingSubject, username, password);
+                System.out.printf("%-10s | %-25s | %-21s | %-16s | %-24s | %-24s | %-16s | %-15s | %n", id, name, dob, address, qualification, teachingSubject, username, password);
+                System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                
                 
             }
 

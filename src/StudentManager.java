@@ -111,15 +111,14 @@ public class StudentManager {
     }
 
     public void displayStudents() throws SQLException {
-        try {
-            Connection connection = JDBC.getConnection();
-            Statement statement = connection.createStatement();
-
+        try (Connection connection = JDBC.getConnection()) {
             String sql = "SELECT * FROM students";
-            ResultSet resultSet = statement.executeQuery(sql);
-
-            System.out.println("STUDENTS LIST");
-            System.out.println("StudentID\tName\t\tDoB\t\tAddress\t\tUsername\tPassword");
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+    
+            System.out.println("----------------------------------------------------------------------------------------------------------------");
+            System.out.printf("%-10s | %-20s | %-18s | %-16s | %-16s | %-15s |%n", "StudentID", "Name", "DoB", "Address", "Username", "Password");
+            System.out.println("----------------------------------------------------------------------------------------------------------------");    
             while (resultSet.next()) {
                 int id = resultSet.getInt("studentID");
                 String name = resultSet.getString("name");
@@ -127,12 +126,12 @@ public class StudentManager {
                 String address = resultSet.getString("address");
                 String username = resultSet.getString("username");
                 String password = resultSet.getString("password");
-                System.out.printf("%-10s%-20s%-18s%-16s%-16s%-15s%n", id, name, dob, address, username, password);
+                System.out.printf("%-10s | %-20s | %-18s | %-16s | %-16s | %-15s |%n", id, name, dob, address, username, password);
+                System.out.println("----------------------------------------------------------------------------------------------------------------");
             }
-
+    
             resultSet.close();
             statement.close();
-            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

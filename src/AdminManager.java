@@ -113,8 +113,9 @@ public class AdminManager {
         String query = "SELECT * FROM admintable";
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(query);
-
-        System.out.printf("%-10s%-20s%-18s%-16s%-16s%-15s%n", "ID", "Name", "DOB", "Address", "Username", "Password");
+        System.out.println("----------------------------------------------------------------------------------------------------------------");
+        System.out.printf("%-10s | %-20s | %-18s | %-16s | %-16s | %-15s | %n", "ID", "Name", "DOB", "Address", "Username", "Password");
+        System.out.println("----------------------------------------------------------------------------------------------------------------");
 
         while (resultSet.next()) {
             String id = resultSet.getString("adminID");
@@ -123,7 +124,8 @@ public class AdminManager {
             String address = resultSet.getString("address");
             String username = resultSet.getString("username");
             String password = resultSet.getString("password");
-            System.out.printf("%-10s%-20s%-18s%-16s%-16s%-15s%n", id, name, dob, address, username, password);
+            System.out.printf("%-10s | %-20s | %-18s | %-16s | %-16s | %-15s |%n", id, name, dob, address, username, password);
+            System.out.println("----------------------------------------------------------------------------------------------------------------");
         }
 
         resultSet.close();

@@ -266,11 +266,13 @@ public class Userlogin {
                                     t = false;
                                     break;  
                                 case 1:
+
+                                try {
+                                    Connection connection = JDBC.getConnection();
+                                    GradeManager gradeManager = new GradeManager(connection);
+                                    gradeManager.displayTeachingCourse(Integer.toString(teacherID));
                                     System.out.println("Enter course code to view students:");
                                     String courseCode = sc.next();
-                                    try {
-                                        Connection connection = JDBC.getConnection();
-                                        GradeManager gradeManager = new GradeManager(connection);
                                         System.out.println("Viewing students in course " + courseCode);
                                         gradeManager.displayStudentsInCourse(courseCode);
                                         connection.close();

@@ -13,11 +13,13 @@ public class GradeManager {
     public void gradeCourse(String teacherID) {
         try {
             // Hiển thị danh sách các khóa học mà giáo viên đang dạy
-            displayStudentsInCourse(teacherID);
+            displayTeachingCourse(teacherID);
 
             // Nhập mã khóa học cần chấm điểm
             System.out.println("Enter course code to grade:");
             String courseCode = scanner.nextLine();
+
+            displayStudentsInCourse(courseCode);
 
             // Chọn loại điểm cần nhập
             int choice = getGradeTypeChoice();
@@ -34,25 +36,61 @@ public class GradeManager {
         }
     }
 
+    public void displayTeachingCourse(String teacherID) throws SQLException {
+        String query = "SELECT c.courseCode, c.courseName, c.subject, c.schedule, c.maxStudents, c.remainingStudents " +
+                       "FROM courses c " +
+                       "WHERE c.teacherID = ? " +
+                       "ORDER BY c.courseCode";
+    
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, teacherID);
+    
+        ResultSet resultSet = statement.executeQuery();
+        System.out.println("Course you are teaching");
+        System.out.println("------------------------------------------------------------------------------------------------");
+        System.out.printf("| %-12s | %-15s | %-10s | %-10s | %-12s | %-18s |%n", "Course Code", "Course Name", "Subject", "Schedule", "Max Students", "Remaining Students");
+        System.out.println("------------------------------------------------------------------------------------------------");
+    
+        while (resultSet.next()) {
+            int courseCode = resultSet.getInt("courseCode");
+            String courseName = resultSet.getString("courseName");
+            String subject = resultSet.getString("subject");
+            String schedule = resultSet.getString("schedule");
+            int maxStudents = resultSet.getInt("maxStudents");
+            int remainingStudents = resultSet.getInt("remainingStudents");
+            System.out.printf("| %-12d | %-15s | %-10s | %-10s | %-12d | %-18d |%n", courseCode, courseName, subject, schedule, maxStudents, remainingStudents);
+            System.out.println("------------------------------------------------------------------------------------------------");
+
+    
+        }
+    
+        resultSet.close();
+        statement.close();
+    }
+
     public void displayStudentsInCourse(String courseCode) throws SQLException {
-        String query = "SELECT s.studentID, s.name, e.midtermGrade, e.finalGrade, averageGrade " +
+        String query = "SELECT s.studentID, s.name, e.midtermGrade, e.finalGrade, e.averageGrade " +
                        "FROM students s " +
                        "INNER JOIN enrollments e ON s.studentID = e.studentID " +
                        "WHERE e.courseCode = ? " +
                        "ORDER BY s.studentID";
+    
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, courseCode);
-        ResultSet resultSet = statement.executeQuery();
     
-        System.out.println("Student ID\tStudent Name\t\tMidterm Grade\tFinal Grade\tAverage Grade");
+        ResultSet resultSet = statement.executeQuery();
+        System.out.println("---------------------------------------------------------------------------------------------------");
+        System.out.printf("%-12s | %-25s | %-16s | %-16s | %-16s |%n", "Student ID", "Student Name", "Midterm Grade", "Final Grade", "Average Grade");
+        System.out.println("---------------------------------------------------------------------------------------------------");
+    
         while (resultSet.next()) {
             String studentID = resultSet.getString("studentID");
             String studentName = resultSet.getString("name");
             double midtermGrade = resultSet.getDouble("midtermGrade");
             double finalGrade = resultSet.getDouble("finalGrade");
             double averageGrade = resultSet.getDouble("averageGrade");
-
-            System.out.println(studentID + "\t\t" + studentName + "\t" + midtermGrade + "\t\t" + finalGrade + "\t\t" + averageGrade);
+            System.out.printf("%-12s | %-25s | %-16.2f | %-16.2f | %-16.2f |%n", studentID, studentName, midtermGrade, finalGrade, averageGrade);
+            System.out.println("---------------------------------------------------------------------------------------------------");
         }
     
         resultSet.close();
@@ -65,19 +103,23 @@ public class GradeManager {
                        "INNER JOIN enrollments e ON c.courseCode = e.courseCode " +
                        "WHERE e.studentID = ? " +
                        "ORDER BY c.courseCode";
+    
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, studentID);
-        ResultSet resultSet = statement.executeQuery();
     
-        System.out.println("Course Code\tCourse Name\tMidterm Grade\tFinal Grade\tAverage Grade");
+        ResultSet resultSet = statement.executeQuery();
+        System.out.println("--------------------------------------------------------------------------------------");
+        System.out.printf("| %-12s | %-15s | %-14s | %-14s | %-15s |%n", "Course Code", "Course Name", "Midterm Grade", "Final Grade", "Average Grade");
+        System.out.println("--------------------------------------------------------------------------------------");
         while (resultSet.next()) {
             String courseCode = resultSet.getString("courseCode");
             String courseName = resultSet.getString("courseName");
             double midtermGrade = resultSet.getDouble("midtermGrade");
             double finalGrade = resultSet.getDouble("finalGrade");
             double averageGrade = resultSet.getDouble("averageGrade");
+            System.out.printf("| %-12s | %-15s | %-14.2f | %-14.2f | %-15.2f |%n", courseCode, courseName, midtermGrade, finalGrade, averageGrade);
+            System.out.println("--------------------------------------------------------------------------------------");
     
-            System.out.println(courseCode + "\t\t" + courseName + "\t\t" + midtermGrade + "\t\t" + finalGrade + "\t\t" + averageGrade);
         }
     
         resultSet.close();
@@ -99,28 +141,88 @@ public class GradeManager {
         gradeStudents(courseCode, "finalGrade");
     }
 
+    // private void gradeStudents(String courseCode, String gradeType) throws SQLException {
+    //     try {
+    //         // Lấy danh sách sinh viên trong khoá học
+    //         String query = "SELECT s.studentID, s.name FROM students s INNER JOIN enrollments cs ON s.studentID = cs.studentID WHERE cs.courseCode = ?";
+    //         PreparedStatement statement = connection.prepareStatement(query);
+    //         statement.setString(1, courseCode);
+    //         ResultSet resultSet = statement.executeQuery();
+
+    //         // Duyệt qua từng sinh viên và chấm điểm
+    //         while (resultSet.next()) {
+    //             String studentID = resultSet.getString("studentID");
+    //             String studentName = resultSet.getString("name");
+    //             double grade = getGrade(gradeType, studentName);
+    //             saveGrade(studentID, courseCode, gradeType, grade);
+    //         }
+
+    //         resultSet.close();
+    //         statement.close();
+    //     } catch (SQLException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
+
     private void gradeStudents(String courseCode, String gradeType) throws SQLException {
         try {
-            // Lấy danh sách sinh viên trong khoá học
-            String query = "SELECT s.studentID, s.name FROM students s INNER JOIN enrollments cs ON s.studentID = cs.studentID WHERE cs.courseCode = ?";
+    
+            boolean exit = false;
+            while(!exit){
+            // Get the studentID from the user
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Enter the studentID: ");
+            String studentID = scanner.nextLine();
+    
+            // Check if the student is enrolled in the course
+            String query = "SELECT COUNT(*) FROM enrollments WHERE courseCode = ? AND studentID = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, courseCode);
+            statement.setString(2, studentID);
             ResultSet resultSet = statement.executeQuery();
-
-            // Duyệt qua từng sinh viên và chấm điểm
-            while (resultSet.next()) {
-                String studentID = resultSet.getString("studentID");
-                String studentName = resultSet.getString("name");
-                double grade = getGrade(gradeType, studentName);
-                saveGrade(studentID, courseCode, gradeType, grade);
+            resultSet.next();
+            int count = resultSet.getInt(1);
+            if (count == 0) {
+                System.out.println("The student is not enrolled in the course.");
+                return;
             }
-
+            // Get the student name
+            query = "SELECT name FROM students WHERE studentID = ?";
+            statement = connection.prepareStatement(query);
+            statement.setString(1, studentID);
+            resultSet = statement.executeQuery();
+            resultSet.next();
+            String studentName = resultSet.getString("name");
+    
+            // Grade the student
+            double grade = getGrade(gradeType, studentName);
+            saveGrade(studentID, courseCode, gradeType, grade);
+            System.out.println("The student " + studentName + " has been graded with " + grade + " in " + gradeType + " for course " + courseCode);
+    
+            System.out.println("Enter 1 to continue grading ");
+            System.out.println("Enter 0 to exit ");
+    
+            int choice;
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+    
+            switch (choice) {
+                case 0:
+                    exit = true;
+                    break;  
+                case 1:
+                    gradeStudents(courseCode, gradeType);
+                break;
+            }
+    
             resultSet.close();
             statement.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    
 
     private double getGrade(String gradeType, String studentName) {
         System.out.println("Enter " + gradeType + " grade for student " + studentName + ":");
@@ -160,8 +262,6 @@ public class GradeManager {
         updateStatement.setString(3, courseCode);
         updateStatement.executeUpdate();
     
-        System.out.println("Grade for student " + studentID + " saved successfully.");
-
         // Kiểm tra nếu có đủ cả hai điểm giữa kỳ và cuối kỳ
         if (gradeType.equals("midtermGrade")) {
             double finalGrade = getFinalGrade(studentID, courseCode);
