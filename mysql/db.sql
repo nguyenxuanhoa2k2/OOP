@@ -1,14 +1,17 @@
 CREATE DATABASE db;
 
 CREATE TABLE `admintable` (
-  `admin_id` int NOT NULL,
-  `username` varchar(50) DEFAULT NULL,
-  `password` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`admin_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `adminID` INT NOT NULL,
+  `name` VARCHAR(50) NOT NULL,
+  `dob` date DEFAULT NULL,
+  `address` VARCHAR(100) NOT NULL,
+  `username` VARCHAR(50) NOT NULL,
+  `password` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`adminID`)
+);
 
 LOCK TABLES `admintable` WRITE;
-INSERT INTO `admintable` VALUES (1101,'admin','123456');
+INSERT INTO `admintable` VALUES (1101,'Nguyen Van A','1980-01-01','Ha Noi','admin','admin');
 UNLOCK TABLES;
 
 CREATE TABLE `teachers` (
