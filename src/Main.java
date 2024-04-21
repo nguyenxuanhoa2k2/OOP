@@ -7,12 +7,14 @@ public class Main {
         int choice;
         
         do {
-            System.out.println("|----------|VUI LONG DANG NHAP|---------|");
-            System.out.println("|---------1->Admin Login.---------------|");
-            System.out.println("|---------2->Teacher Login.-------------|");
-            System.out.println("|---------3->Student Login.-------------|");
-            System.out.println("|---------0->Exit.----------------------|");
-            System.out.println("|---------------------------------------|");
+            System.out.println("+------------------------------+");
+            System.out.println("|          PLEASE LOGIN       |");
+            System.out.println("+------------------------------+");
+            System.out.println("|  1. Admin Login             |");
+            System.out.println("|  2. Teacher Login           |");
+            System.out.println("|  3. Student Login           |");
+            System.out.println("|  0. Exit                    |");
+            System.out.println("+------------------------------+");
             System.out.println("Choose: ");
             choice = sc.nextInt();
             sc.nextLine();

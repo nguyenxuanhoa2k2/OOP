@@ -22,9 +22,10 @@ public class Userlogin {
                         boolean t = true ;
                         while (t) {
                             System.out.println("\n-----Welcome to school management page for admin -----");
-                            System.out.println("1. Students Management");
-                            System.out.println("2. Teachers Management");
-                            System.out.println("3. Course Management");
+                            System.out.println("1. Admins Management");
+                            System.out.println("2. Students Management");
+                            System.out.println("3. Teachers Management");
+                            System.out.println("4. Course Management");
                             System.out.println("0. Log out");
                             System.out.print("Choose a function: ");
                             choice = sc.nextInt();
@@ -33,8 +34,56 @@ public class Userlogin {
                                 case 0:
                                 t = false;
                                 break;
-                              
+                                
                                 case 1:
+                                System.out.println("Admins Management");
+                                try {
+                                    Connection connection = JDBC.getConnection();
+                                    AdminManager manager = new AdminManager(connection);
+
+                                    boolean exit = false;
+
+                                    while (!exit) {
+                                        System.out.println("1. Add Admin");
+                                        System.out.println("2. Delete Admin");
+                                        System.out.println("3. Update Admin");
+                                        System.out.println("4. Display All Admins");
+                                        System.out.println("5. Exit");
+                                        System.out.println("Choose an option:");
+
+                                        int choice1 = sc.nextInt();
+                                        sc.nextLine(); 
+
+                                        switch (choice1) {
+                                            case 1:
+                                                manager.addAdmin();
+                                                break;
+                                            case 2:
+                                                manager.displayAdmins();
+                                                manager.deleteAdmin();
+                                                break;
+                                            case 3:
+                                                manager.displayAdmins();
+                                                manager.updateAdmin();
+                                                break;
+                                            case 4:
+                                                manager.displayAdmins();
+                                                break;
+                                            case 5:
+                                                exit = true;
+                                                break;
+                                            default:
+                                                System.out.println("Invalid choice. Please choose again.");
+                                        }
+                                    }
+
+                                    JDBC.closeConnection(connection);
+                                } catch (SQLException e) {
+                                    e.printStackTrace();
+                                }
+                                break;
+
+                                case 2:
                                 System.out.println("Students Management");
                                 try {
                                     Connection connection = JDBC.getConnection();
@@ -58,9 +107,11 @@ public class Userlogin {
                                                 manager.addStudent();
                                                 break;
                                             case 2:
+                                                manager.displayStudents();
                                                 manager.deleteStudent();
                                                 break;
                                             case 3:
+                                                manager.displayStudents();
                                                 manager.updateStudent();
                                                 break;
                                             case 4:
@@ -79,7 +130,7 @@ public class Userlogin {
                                 }
                             
                     
-                                case 2:
+                                case 3:
                                     System.out.println("Teachers Management");
                                     try {
                                         Connection connection = JDBC.getConnection();
@@ -102,9 +153,11 @@ public class Userlogin {
                                                 manager.addTeacher();
                                                     break;
                                                 case 2:
+                                                    manager.displayTeachers();
                                                     manager.deleteTeacher();
                                                     break;
                                                 case 3:
+                                                    manager.displayTeachers();
                                                     manager.updateTeacher();
                                                     break;
                                                 case 4:
@@ -121,7 +174,7 @@ public class Userlogin {
                                         e.printStackTrace();
                                     }
                                     break;
-                                case 3:
+                                case 4:
                                 System.out.println("Course Management");
                                 try {
                                     Connection connection = JDBC.getConnection();
@@ -144,9 +197,11 @@ public class Userlogin {
                                                 manager.addCourse();
                                                 break;
                                             case 2:
+                                                manager.displayCourses();
                                                 manager.deleteCourse();
                                                 break;
                                             case 3:
+                                                manager.displayCourses();
                                                 manager.updateCourse();
                                                 break;
                                             case 4:
@@ -288,11 +343,9 @@ public class Userlogin {
                                         t = false;
                                         break;
                                     case 1:
-                                        System.out.println("Enter student ID to view grades:");
                                         try {
                                             Connection connection = JDBC.getConnection();
                                             GradeManager gradeManager = new GradeManager(connection);
-                                            System.out.println("Viewing grades for student " + studentID);
                                             gradeManager.studentViewGrades(Integer.toString(studentID));
                                             connection.close();
                                         } catch (SQLException e) {
@@ -321,11 +374,13 @@ public class Userlogin {
 
                                                 switch (choice2) {
                                                     case 1:
+                                                        manager.displayCourses();
                                                         System.out.println("Enter course code:");
                                                         String courseCode = sc.nextLine();
                                                         enrollments.enrollStudent(Integer.toString(studentID), courseCode);
                                                         break;
                                                     case 2:
+                                                        enrollments.displayEnrollments(Integer.toString(studentID));
                                                         System.out.println("Enter course code:");
                                                         String courseCodeToDrop = sc.nextLine();
                                                         enrollments.dropStudent(Integer.toString(studentID), courseCodeToDrop);
@@ -335,6 +390,7 @@ public class Userlogin {
                                                         break;
                                                     case 4:
                                                         manager.displayCourses();
+                                                        break;
                                                     case 5:
                                                         exit = true;
                                                         break;

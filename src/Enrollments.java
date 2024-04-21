@@ -126,27 +126,51 @@ public class Enrollments {
         deleteEnrollmentStatement.close();
     }
 
+    // public void displayEnrollments(String studentID) throws SQLException {
+    //     String query = "SELECT e.studentID, c.courseName, e.courseCode FROM enrollments e JOIN courses c ON e.courseCode = c.courseCode WHERE e.studentID = ?";
+    //     PreparedStatement statement = connection.prepareStatement(query);
+    //     statement.setString(1, studentID);
+    //     ResultSet resultSet = statement.executeQuery();
+        
+    //     System.out.println("Enrollments:");
+    //     System.out.printf("%-15s %-10s%n",  "Course Code", "Course Name");
+        
+    //     while (resultSet.next()) {
+    //         String courseCode = resultSet.getString("courseCode");
+    //         String courseName = resultSet.getString("courseName");
+    //         System.out.printf("%-15s %-10s%n",  courseCode, courseName);
+    //     }
+        
+    //     resultSet.close();
+    //     statement.close();
+    // }
+
     public void displayEnrollments(String studentID) throws SQLException {
-        String query = "SELECT e.studentID, c.courseName, e.courseCode FROM enrollments e JOIN courses c ON e.courseCode = c.courseCode WHERE e.studentID = ?";
+        String query = "SELECT e.studentID, c.courseName, c.courseCode, c.subject, c.schedule "
+                     + "FROM enrollments e "
+                     + "JOIN courses c ON e.courseCode = c.courseCode "
+                     + "WHERE e.studentID = ?";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, studentID);
         ResultSet resultSet = statement.executeQuery();
         
         System.out.println("Enrollments:");
-        System.out.printf("%-10s %-20s %-10s%n", "Student ID", "Course Name", "Course Code");
+        System.out.printf("%-15s %-15s %-15s %-10s%n",  "Course Code", "Course Name", "Subject", "Schedule");
         
         while (resultSet.next()) {
-            String studentIDFromResultSet = resultSet.getString("studentID");
             String courseName = resultSet.getString("courseName");
             String courseCode = resultSet.getString("courseCode");
+            String subject = resultSet.getString("subject");
+            String schedule = resultSet.getString("schedule");
             
-            System.out.printf("%-10s %-20s %-10s%n", studentIDFromResultSet, courseName, courseCode);
+            System.out.printf("%-15s %-15s %-15s %-10s%n",  courseCode, courseName, subject, schedule);
         }
         
         resultSet.close();
         statement.close();
     }
 
+    
 
     
 }

@@ -29,14 +29,16 @@ public class StudentManager {
         System.out.println("Enter student's password:");
         String password = scanner.nextLine();
 
+        Student student = new Student(name, studentID, dob, address, username, password);
+
         String query = "INSERT INTO students (name, studentID, dob, address, username, password) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, name);
-        statement.setString(2, studentID);
-        statement.setString(3, dob);
-        statement.setString(4, address);
-        statement.setString(5, username);
-        statement.setString(6, password);
+        statement.setString(1, student.getName());
+        statement.setString(2, student.getStudentID());
+        statement.setString(3, student.getDob());
+        statement.setString(4, student.getAddress());
+        statement.setString(5, student.getUsername());
+        statement.setString(6, student.getPassword());
         statement.executeUpdate();
         System.out.println("Student added successfully.");
     }
@@ -70,21 +72,26 @@ public class StudentManager {
         String columnToUpdate = null;
         String newValue = null;
 
+        Student student = new Student(studentID);
+
         switch (choice) {
             case 1:
                 columnToUpdate = "name";
                 System.out.println("Enter new name:");
                 newValue = scanner.nextLine();
+                student.setName(newValue);
                 break;
             case 2:
                 columnToUpdate = "dob";
                 System.out.println("Enter new date of birth (YYYY-MM-DD):");
                 newValue = scanner.nextLine();
+                student.setDob(newValue);
                 break;
             case 3:
                 columnToUpdate = "address";
                 System.out.println("Enter new address:");
                 newValue = scanner.nextLine();
+                student.setAddress(newValue);
                 break;
             default:
                 System.out.println("Invalid choice. No updates performed.");
@@ -92,7 +99,7 @@ public class StudentManager {
         }
 
         String query = "UPDATE students SET " + columnToUpdate + " = ? WHERE studentID = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
+        PreparedStatement statement =connection.prepareStatement(query);
         statement.setString(1, newValue);
         statement.setString(2, studentID);
         int rowsUpdated = statement.executeUpdate();
